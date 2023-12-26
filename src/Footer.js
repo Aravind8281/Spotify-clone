@@ -1,27 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useStateValue } from "./StateProvider";
 import "./Footer.css";
 import { Pause, PlaceOutlined, PlaylistPlay, Repeat, Shuffle, SkipNext, SkipPrevious, VolumeDown } from "@mui/icons-material";
 import { Grid, Slider } from "@mui/material";
 
 function Footer({ spotify }) {
-  const [{ token, item, playing }, dispatch] = useStateValue();
+  const [{ item, playing }, dispatch] = useStateValue();
 
   useEffect(() => {
-    spotify.getMyCurrentPlaybackState().then((r) => {
-      console.log(r);
+    const fetchData = async () => {
+      try {
+        const playbackState = await spotify.getMyCurrentPlaybackState();
+        console.log(playbackState);
 
-      dispatch({
-        type: "SET_PLAYING",
-        playing: r.is_playing,
-      });
+        dispatch({
+          type: "SET_PLAYING",
+          playing: playbackState.is_playing,
+        });
 
-      dispatch({
-        type: "SET_ITEM",
-        item: r.item,
-      });
-    });
-  }, [spotify]);
+        dispatch({
+          type: "SET_ITEM",
+          item: playbackState.item,
+        });
+      } catch (error) {
+        console.error("Error fetching playback state:", error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch, spotify]);
 
   const handlePlayPause = () => {
     if (playing) {
@@ -113,7 +120,7 @@ function Footer({ spotify }) {
             <PlaylistPlay />
           </Grid>
           <Grid item>
-            <VolumeDown/>
+            <VolumeDown />
           </Grid>
           <Grid item xs>
             <Slider aria-labelledby="continuous-slider" />
