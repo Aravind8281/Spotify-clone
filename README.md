@@ -1,3 +1,3 @@
-## spotify-clone 
+# Spotify-clone 
 
-Optimized only for PC
+This Spotify Clone is build using Spotify web api and optimized only for pc
