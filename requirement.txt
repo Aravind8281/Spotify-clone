@@ -1,0 +1,9 @@
+npx create-react-app spotify_clone
+npm install firebase
+npm install styled-components
+npm install -g axios
+npm install @mui/icons-material
+npm install @emotion/react @emotion/styled
+npm i spotify-web-api-js
+npm install @mui/material @mui/icons-material
+
